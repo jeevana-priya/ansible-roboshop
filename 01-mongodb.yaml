@@ -1,0 +1,10 @@
+- name: configuring mongodb
+  hosts: local
+  become: yes
+  tasks:
+  - name: copy mongodb repo
+   
+
+   #insatll mongodb
+
+   #
