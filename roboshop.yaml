@@ -1,6 +1,6 @@
 - name: roboshop instance creation
   hosts: local
-  become: true
+  connection: local
   vars:
     instances: ["mongodb","redis","mysql"]
     image_id: ami-0220d79f3f480ecf5
