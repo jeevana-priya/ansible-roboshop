@@ -1,0 +1,9 @@
+- name: tets instance creaction 
+  hosts: local
+  connection: local
+  tasks:
+    - amazon.aws.ec2_instance:
+        name: test-instance
+        image_id: ami-0220d79f3f480ecf5
+        instance_type: t3.micro
+      
