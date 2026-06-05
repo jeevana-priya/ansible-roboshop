@@ -8,11 +8,10 @@
   - name: create instance
     amazon.aws.ec2_instance:
       name: "roboshop-{{ item }}"
-      instance_type: t3.micro
-      security_groups: 
-      - "roboshop-{{ item }}"
-      - roboshop-common
       image_id: "{{ image_id }}"
+      instance_type: t3.micro
+      region: us-east-1
+      vpc_subnet_id: subnet-0bcdf0124041a31dc
     loop: "{{ instances }}"
     register: ec2_output
   
