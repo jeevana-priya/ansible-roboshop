@@ -31,7 +31,7 @@
   - name: downlaod application code
     get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
-      path: /tmp/shipping.zip
+      dest: /tmp/shipping.zip
   - name: unzip
     unarchive:
       src: /tmp/shipping.zip
