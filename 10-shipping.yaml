@@ -65,11 +65,10 @@
     - /app/db/schema.sql
     - /app/db/app-user.sql 
     - /app/db/master-data.sql
-   
   - name: deamon reload
     systemd_service:
       name: shipping
-      deamon_reload: true
+      daemon_reload: true
   - name: enable and start shipping
     service:
       name: shipping
