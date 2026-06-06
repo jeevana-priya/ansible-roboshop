@@ -1,0 +1,27 @@
+- name: configure rabbitmq
+  hosts: rabbitmq
+  become: yes
+  tasks:
+  - name: copy rabbitmq repo
+    copy:
+      src: rabbitmq.repo
+      dest: /etc/yum.repos.d/rabbitmq.repo
+  - name: install rabitmq
+    package:
+      name: rabbitmq-server
+      state: present
+  - name: enable and start
+    service:
+      name: rabbitmq-server
+      state: started
+      enabled: yes
+  - name: create user and run the server
+    community.rabbitmq.rabbitmq_user:
+      user: roboshop
+      password: roboshop123
+      permissions:
+        - vhost: /
+          configure_priv: .*
+          read_priv: .*
+          write_priv: .*
+      state: present
