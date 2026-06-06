@@ -12,7 +12,7 @@
   - name: create application user
     user:
       name: roboshop
-      home: "/app"
+      home: /app
       system: true
       shell: /sbin/nologin
       comment: roboshop system user

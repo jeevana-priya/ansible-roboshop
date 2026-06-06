@@ -3,7 +3,7 @@
   become: yes
   tasks:
   - name: install python
-    pacakge:
+    package:
       name: "{{ item }}"
       status: present
     loop:
@@ -14,7 +14,7 @@
     user:
       name: roboshop
       system: true 
-      home: "/app"
+      home: /app
       shell: /sbin/nologin  # Prevents direct interactive SSH login for security
       comment: "Roboshop System user"
   - name: delete app directory
