@@ -60,7 +60,7 @@
       - mongodb
   - name: print catalogue_output
     debug:
-      msg: "{{ catalogue_output}}"
+      msg: "{{ catalogue_output }}"
     tags:
       - mongodb
   - name: load products
@@ -68,5 +68,15 @@
     when: catalogue_output.stdout | int < 0
     tags:
     - mongodb
+  - name: deamon reload
+    systemd_service:
+      name: catalogue
+      daemon_reload: true
+  - name: enable and start catalogue
+    service:
+      name: catalogue
+      state: restarted
+      enabled: yes
+    
 
     
