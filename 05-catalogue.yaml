@@ -5,7 +5,7 @@
   - name: enable nodejs 20
     command: dnf module enable nodejs:20 -y
   - name: install nodejs
-    pacakges:
+    pacakge:
       name: nodejs
       state: present
   - name: Create the Node.js application service user
@@ -37,3 +37,4 @@
     unarchive:
       src: /tmp/catalogue.zip
       dest: /app
+      remote_src: yes
