@@ -11,14 +11,12 @@
       name: mongodb-org
       state: present
 
-  - name: chage listen port
-    lineinfile:
+  - name: allow remote connection
+    replace:
       path: /etc/mongod.conf
-      regexp: '^\s*bindIp:\s*127\.0\.0\.1'
-      line: '  bindIp: 0.0.0.0'
-      backrefs: no
-      notify: Restart MongoDB
-
+      regexp: 127.0.0.1
+      replace: 0.0.0.0
+      
   - name: ensure mongodb started and enabled
     service:
       name: mongodb
