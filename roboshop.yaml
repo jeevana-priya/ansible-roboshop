@@ -5,6 +5,7 @@
   vars:
     instances: ["mongodb","redis"]
     image_id: ami-0220d79f3f480ecf5
+    domain_name: matamma.online
 
   tasks:
   - name: create instance
@@ -19,12 +20,33 @@
     loop: "{{ instances }}"
     register: ec2_output
 
-  #- name: print ec2 output
-   # debug:
-    #  msg: "{{ ec2_output }}"
+  # - name: print ec2 output
+  #    debug:
+  #     msg: "{{ ec2_output }}"
 
-  - name: create route53 record
-    debug:
-      msg: "Instances name: {{ item.item }} privateIP: {{ item.instances[0].private_ip_address }}"
+  # - name: create route53 record
+  #   debug:
+  #     msg: "Instances name: {{ item.item }} privateIP: {{ item.instances[0].private_ip_address }}"
+  #   loop: "{{ ec2_output.results }}"
+  - name: create r53 record
+    amazon.aws.route53:
+      state: present
+      zone: matamma.online
+      record: {{ item.item }}.{{domain_name}}
+      type: A
+      ttl: 1
+      value: "{{ item.instances[0].private_ip_address }}"
     loop: "{{ ec2_output.results }}"
+   
+  - name: create r53 record for frontend
+    amazon.aws.route53:
+      state: present
+      zone: matamma.online
+      record: {{ item.item }}.{{domain_name}}
+      type: A
+      ttl: 1
+      value: "{{ item.instances[0].public_ip_address }}"
+    loop: "{{ ec2_output.results }}"
+    when: item.item == "frontend"
+   
   
