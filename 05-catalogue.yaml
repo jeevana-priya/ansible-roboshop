@@ -5,7 +5,7 @@
   - name: enable nodejs 20
     command: dnf module enable nodejs:20 -y
   - name: install nodejs
-    pacakge:
+    package:
       name: nodejs
       state: present
   - name: Create the Node.js application service user
