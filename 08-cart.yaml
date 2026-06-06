@@ -7,7 +7,7 @@
   - name: install node
     package:
       name: nodejs
-      status: present
+      state: present
   - name: create application user
     user:
       name: roboshop
