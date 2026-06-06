@@ -63,6 +63,10 @@
       msg: "{{ catalogue_output}}"
     tags:
       - mongodb
-  
+  - name: load products
+    shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
+    when: catalogue_output.stdout | int < 0
+    tags:
+    - mongodb
 
     
