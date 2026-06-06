@@ -5,7 +5,7 @@
   - name: install python
     package:
       name: "{{ item }}"
-      status: present
+      state: present
     loop:
     - python3
     - gcc
