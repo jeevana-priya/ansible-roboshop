@@ -3,9 +3,10 @@
   connection: local
 
   vars:
-    instances: ["mongodb","redis"]
+    instances: ["mongodb","redis","frontend","mysql"]
     image_id: ami-0220d79f3f480ecf5
     domain_name: matamma.online
+    action: create
 
   tasks:
   - name: create instance
@@ -19,6 +20,7 @@
       image_id: "{{ image_id }}"
     loop: "{{ instances }}"
     register: ec2_output
+    when: action == "create"
 
   - name: create r53 record
     amazon.aws.route53:
@@ -30,6 +32,7 @@
       value: "{{ item.instances[0].private_ip_address }}"
       overwrite: true
     loop: "{{ ec2_output.results }}"
+    when: action == "create"
    
   - name: create r53 record for frontend
     amazon.aws.route53:
@@ -41,6 +44,30 @@
       value: "{{ item.instances[0].public_ip_address }}"
       overwrite: true
     loop: "{{ ec2_output.results }}"
-    when: item.item == "frontend"
+    when: 
+    - item.item == "frontend"
+    - action == "create"
+
+  - name: delete route53 records
+    amazon.aws.route53:
+      state: absent
+      zone: matamma.online
+      record: "{{ item }}.{{ domain_name }}"
+      type: A
+      ttl: 1
+    loop: "{{ instances }}"
+    when: action == "delete"
+    
+  - name: delete route53 records for frontend
+    amazon.aws.route53:
+      state: absent
+      zone: matamma.online
+      record: "{{ domain_name }}"
+      type: A
+      ttl: 1
+    loop: "{{ instances }}"
+    when: 
+    - action == "delete"
+    - item == "frontend"
    
   
