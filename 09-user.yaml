@@ -4,37 +4,34 @@
   tasks:
   - name: enable nodejs 20
     command: dnf module enable nodejs:20 -y
-  - name: install nodejs 20
+  - name: install nodejs
     package:
       name: nodejs
       state: present
-  - name: add application user
-    ansible.builtin.user:
+  - name: create system user
+    user:
       name: roboshop
-      shell: /sbin/nologin     # Prevents the user from logging in interactively
+      system: true
       home: /app
-      system: true                   # Marks this as a system account (no aging/low UID)
-      state: present
-      comment: "roboshop system user"
-  - name: delete app dir
+      shell: /sbin/nologin
+      comment: "Roboshop System user"
+  - name: delete /app directory
     file:
       path: /app
       state: absent
-
-  - name: remove zip files
+  - name: delete user.zip in /tmp
     file:
       path: /tmp/user.zip
       state: absent
-
-  - name: Create application deployment directory
-    ansible.builtin.file:
+  - name: create app directory
+    file:
       path: /app
       state: directory
   - name: download user code
     get_url:
-      url: https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
+      url: https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip 
       dest: /tmp/user.zip
-  - name: unzip
+  - name: unzip user
     unarchive:
       src: /tmp/user.zip
       dest: /app
@@ -50,9 +47,8 @@
     systemd_service:
       name: user
       daemon_reload: true
-  - name: enable and start user
+  - name: enable and restart user
     service:
       name: user
       state: restarted
       enabled: yes
-    
