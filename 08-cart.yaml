@@ -12,7 +12,7 @@
     user:
       name: roboshop
       system: true 
-      home: "/app"
+      home: /app
       shell: /sbin/nologin
       comment: roboshop system user
   - name: remove directory
