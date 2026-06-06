@@ -27,7 +27,7 @@
   - name: create app dir
     file:
       path: /app
-      state: /directory
+      state: directory
   - name: downlaod application code
     get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
